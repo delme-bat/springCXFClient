@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://cxf.apache.org/core" xmlns:wsa="http://cxf.apache.org/ws/addressing"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:sec="http://cxf.apache.org/configuration/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://cxf.apache.org/core 
+    http://cxf.apache.org/schemas/core.xsd  
+    http://cxf.apache.org/jaxws   
+    http://cxf.apache.org/schemas/jaxws.xsd
+    http://cxf.apache.org/jaxrs
+    http://cxf.apache.org/schemas/jaxrs.xsd
+    http://cxf.apache.org/configuration/security
+    http://cxf.apache.org/schemas/configuration/security.xsd
+   	http://cxf.apache.org/transports/http/configuration 
+   	http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+   	
+   	<!-- helloClient -->
+   	<jaxws:client id="helloClient" serviceClass="com.bush76.core.ws.client.hello.IHelloService"  
+    	address="https://192.168.1.176:8443/springCXF/ws/hello" />  
+
+	<!-- SSL set start -->
+	<http-conf:conduit name="https://192.168.1.176:8443/springCXF/ws/.*">
+		<http-conf:tlsClientParameters secureSocketProtocol="TLS">
+			<sec:keyManagers keyPassword="changeit">
+				<sec:keyStore type="JKS" password="changeit" resource="config/tomcat.keystore" />
+			</sec:keyManagers>
+			<sec:trustManagers>
+				<sec:keyStore type="JKS" password="changeit" resource="config/tomcat.keystore" />
+			</sec:trustManagers>
+			<sec:cipherSuitesFilter>
+				<sec:include>.*_EXPORT_.*</sec:include>
+				<sec:include>.*_EXPORT1024_.*</sec:include>
+				<sec:include>.*_WITH_DES_.*</sec:include>
+				<sec:include>.*_WITH_AES_.*</sec:include>
+				<sec:include>.*_WITH_NULL_.*</sec:include>
+				<sec:exclude>.*_DH_anon_.*</sec:exclude>
+			</sec:cipherSuitesFilter>
+		</http-conf:tlsClientParameters>
+	</http-conf:conduit>
+	<!-- SSL set end -->
+
+</beans>
