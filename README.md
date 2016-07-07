@@ -1,2 +1,2 @@
 # springCXFClient
-springMVC + CXF (client) + HTTPS 
+springMVC + CXF (client) + HTTPS + maven
